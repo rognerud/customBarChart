@@ -549,8 +549,8 @@ function ( $, echarts, props, qlik ) {
                         legend: legend,
                         dataZoom: dataZoomArray,
                         grid: grid,
-                        xAxis:xAxis, 
-                        yAxis: yAxis,
+                        xAxis: yAxis, 
+                        yAxis: xAxis,
                         series: serieArray
             };
 
