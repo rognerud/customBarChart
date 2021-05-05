@@ -71,7 +71,7 @@ function ( $, echarts, props, qlik ) {
             fontStyle:  settings.dataLabel.style,
             position:   settings.dataLabel.position,
             distance:   settings.dataLabel.distance,
-            rotate:     settings.dataLabel.rotate,
+            rotate:      settings.dataLabel.rotate,
             formatter: function (params) {
                 return params.data.valueText;
             }
@@ -190,7 +190,7 @@ function ( $, echarts, props, qlik ) {
 
             if(measureInfo.colorType==0){
                 labelLine.lineStyle.color=measureInfo.dataLabel.color.color
-            } else if(measureInfo.colorType==1){
+            }else if(measureInfo.colorType==1){
                 labelLine.lineStyle.color=measureInfo.dataLabel.colorExpression
             }
 
@@ -274,6 +274,7 @@ function ( $, echarts, props, qlik ) {
             },
             itemStyle:{},
             lineStyle:{},
+
         };
 
         //Set single color
@@ -285,10 +286,13 @@ function ( $, echarts, props, qlik ) {
 
         //set expression colors if they not are ''    
         }else if (focus.colorType==1){
+
             if(!focus.label.colorExpression.color==''){
+
                 emphasis.label.color=focus.label.colorExpression.color
             }
             if(!focus.item.colorExpression.color==''){
+
                 emphasis.itemStyle.color= focus.item.colorExpression.color
                 emphasis.lineStyle.color= focus.item.colorExpression.color
             }
@@ -299,30 +303,36 @@ function ( $, echarts, props, qlik ) {
     }
 
     function getBarBackgroundColor(layout){
-        var BackgroundColor = layout.settings.barOptions.BackgroundColor
+        var barBackground = layout.settings.barOptions.barBackground
 
         var backgroundStyle = {
-            color: BackgroundColor
+            color: "#fff"
+        };
+        if (barbackground.on) {
+            backgroundStyle.color = barBackground.color.color
         }
 
-        return backgroundStyle
+        return backgroundStyle;
+
     }
     
     function getSerieArray(layout){
         serieArray=[];
 
         var expressionNumber = layout.qHyperCube.qMeasureInfo.length;
-
+        var showBackground = layout.settings.barOptions.barBackground.on
         for(var x=0;x<expressionNumber;x++){
 
             serieArray[x]=getSerieCommumProperty(layout,x)
             serieArray[x].label=getSerieLabel(layout,x)
             serieArray[x].data=getSerieValue(layout,x)
             serieArray[x].emphasis=getEmphasis(layout)
-            serieArray[x].showBackground = layout.settings.barOptions.showBackground
-            seriearray[x].backgroundStyle = getBarBackgroundColor(layout)
-
+            serieArray[x].showBackground=showBackground
+            seriearray[x].backgroundStyle=getBarBackgroundColor(layout)
         }
+
+        // console.log(getBarBackgroundColor(layout))
+
         if(layout.qHyperCube.qMeasureInfo)
         return serieArray;
     }
@@ -433,6 +443,7 @@ function ( $, echarts, props, qlik ) {
         }
 
 
+
         return legendTextStyle
 
     }
@@ -465,26 +476,13 @@ function ( $, echarts, props, qlik ) {
     }
 
     function getXAxis(layout){
-        if(layout.settings.datalabel.asXaxis){
-            var xAxis = [
-                {
-                    data: getDimensionArray(layout),
-                    axisLabel: getAxisLabel(layout)
-                },
-                {
-                    data: getDimensionArray(layout),
-                    axisLabel: getSerieLabel(layout)
-                }
 
-            ]
-        }
-        else {
-            var xAxis =  {
-                data: getDimensionArray(layout),
-                axisLabel: getAxisLabel(layout)
-            }
-        }
+        var xAxis =  {
+            data: getDimensionArray(layout),
+            axisLabel: getAxisLabel(layout)
+         }
 
+        
          return xAxis;
 
     }
@@ -549,7 +547,7 @@ function ( $, echarts, props, qlik ) {
         support:{snapshot: true,export: true,exportData: true},
         paint: function ( $element, layout ) {
 
-            //console.log(layout)
+            console.log(layout)
             echarts.dispose($element[0]); 
 
             var dimensionName           =   getDimensionName(layout);
@@ -568,14 +566,15 @@ function ( $, echarts, props, qlik ) {
                         legend: legend,
                         dataZoom: dataZoomArray,
                         grid: grid,
-                        xAxis: yAxis, 
-                        yAxis: xAxis,
+                        xAxis: xAxis, 
+                        yAxis: yAxis,
                         series: serieArray
             };
 
             console.log(option)
 
             myChart.setOption(option);
+
 
             myChart.on('click', function (params) {
                 qlik.currApp(this).field(dimensionName).selectValues([params.name],true,true)

@@ -1,8 +1,8 @@
 {
-    "name": "tv2_Bar_charts",
-    "description": "Custom chart based in e-charts library",
-    "icon": "extension",
-    "type": "visualization",
-    "version": "1.0",
-    "author": "gisle"
+ "name" : "tv2_Bar_charts",
+ "description" : "Custom chart based in e-charts library",
+ "icon" : "extension",
+ "type" : "visualization",
+ "version": "2.5.0",
+ "author": "Wederson Domingues"
 }
