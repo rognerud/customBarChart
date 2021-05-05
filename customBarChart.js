@@ -71,7 +71,7 @@ function ( $, echarts, props, qlik ) {
             fontStyle:  settings.dataLabel.style,
             position:   settings.dataLabel.position,
             distance:   settings.dataLabel.distance,
-            rotate:      settings.dataLabel.rotate,
+            rotate:     settings.dataLabel.rotate,
             formatter: function (params) {
                 return params.data.valueText;
             }
@@ -190,7 +190,7 @@ function ( $, echarts, props, qlik ) {
 
             if(measureInfo.colorType==0){
                 labelLine.lineStyle.color=measureInfo.dataLabel.color.color
-            }else if(measureInfo.colorType==1){
+            } else if(measureInfo.colorType==1){
                 labelLine.lineStyle.color=measureInfo.dataLabel.colorExpression
             }
 
@@ -274,7 +274,6 @@ function ( $, echarts, props, qlik ) {
             },
             itemStyle:{},
             lineStyle:{},
-
         };
 
         //Set single color
@@ -286,21 +285,27 @@ function ( $, echarts, props, qlik ) {
 
         //set expression colors if they not are ''    
         }else if (focus.colorType==1){
-
             if(!focus.label.colorExpression.color==''){
-
                 emphasis.label.color=focus.label.colorExpression.color
             }
             if(!focus.item.colorExpression.color==''){
-
                 emphasis.itemStyle.color= focus.item.colorExpression.color
                 emphasis.lineStyle.color= focus.item.colorExpression.color
             }
         }
 
-
         return emphasis;
 
+    }
+
+    function getBarBackgroundColor(layout){
+        var BackgroundColor = layout.settings.barOptions.BackgroundColor
+
+        var backgroundStyle = {
+            color: BackgroundColor
+        }
+
+        return backgroundStyle
     }
     
     function getSerieArray(layout){
@@ -314,6 +319,9 @@ function ( $, echarts, props, qlik ) {
             serieArray[x].label=getSerieLabel(layout,x)
             serieArray[x].data=getSerieValue(layout,x)
             serieArray[x].emphasis=getEmphasis(layout)
+            serieArray[x].showBackground = layout.settings.barOptions.showBackground
+            seriearray[x].backgroundStyle = getBarBackgroundColor(layout)
+
         }
 
         if(layout.qHyperCube.qMeasureInfo)
@@ -459,11 +467,25 @@ function ( $, echarts, props, qlik ) {
     }
 
     function getXAxis(layout){
+        if(layout.settings.datalabel.asXaxis){
+            var xAxis = [
+                {
+                    data: getDimensionArray(layout),
+                    axisLabel: getAxisLabel(layout)
+                },
+                {
+                    data: getDimensionArray(layout),
+                    axisLabel: getSerieLabel(layout)
+                }
 
-        var xAxis =  {
-            data: getDimensionArray(layout),
-            axisLabel: getAxisLabel(layout)
-         }
+            ]
+        }
+        else {
+            var xAxis =  {
+                data: getDimensionArray(layout),
+                axisLabel: getAxisLabel(layout)
+            }
+        }
 
         
          return xAxis;

@@ -169,6 +169,20 @@ define( [], function () {
                         type: "items",
                         label: "Data Label",
                         items: {
+                            LabelAsXAxis: {
+                                ref: "settings.datalabel.asXaxis",
+                                type: "boolean",
+                                component: "switch",
+                                label: "Value Labels as secondary Labelaxis",
+                                options: [{
+                                    value: true,
+                                    label: "Show"
+                                }, {
+                                    value: false,
+                                    label: "Hide"
+                                }],
+                                defaultValue: false
+                            },
                             LabelVisibility: {
                                 ref: "settings.dataLabel.visibility",
                                 type: "boolean",
@@ -220,7 +234,11 @@ define( [], function () {
                                     {value:"left",label:"left"},
                                     {value:"right",label:"right"},
                                     {value:"top",label:"top"}
-                                ]
+                                ],
+                                defaultValue: false,
+                                show: function(param){
+                                    return !param.settings.datalabel.asXaxis
+                                }
                             },
                             LabelFontStyle:{
                                 ref: "settings.dataLabel.style",
@@ -280,7 +298,10 @@ define( [], function () {
                                     value: false,
                                     label: "Off"
                                 }],
-                                defaultValue: false
+                                defaultValue: false,
+                                show: function(param){
+                                    return !param.settings.datalabel.asXaxis
+                                }
                             },
                             LabelDragText: {
                                 label:"Label dragging only works when label border width is 0.",
@@ -741,6 +762,30 @@ define( [], function () {
                                 expression: "optional",
                                 show: function(param) {
                                     return !param.settings.barOptions.barWidthAuto;
+                                }
+                            },
+                            showBackground: {
+                                ref: "settings.barOptions.showBackground",
+                                label: "background on bars",
+                                type: "boolean",
+                                component: "switch",
+                                options: [{
+                                    value: true,
+                                    label: "On"
+                                }, {
+                                    value: false,
+                                    label: "Off"
+                                }],
+                                defaultValue: true                                
+                            },
+                            backgroundColor: {
+                                type: "string",
+                                ref: "settings.barOptions.BackgroundColor",
+                                label: "background bar Color",
+                                component: "expression",
+                                defaultValue: "='#000'",
+                                show: function(param) {
+                                    return settings.barOptions.showBackground;
                                 }
                             },
                             MaxBarWidth: {
