@@ -1,5 +1,5 @@
 {
-    "name": "tv2 Bar charts",
+    "name": "tv2_Bar_charts",
     "description": "Custom chart based in e-charts library",
     "icon": "extension",
     "type": "visualization",
