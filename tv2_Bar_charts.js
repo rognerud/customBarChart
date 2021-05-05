@@ -323,7 +323,6 @@ function ( $, echarts, props, qlik ) {
             seriearray[x].backgroundStyle = getBarBackgroundColor(layout)
 
         }
-
         if(layout.qHyperCube.qMeasureInfo)
         return serieArray;
     }
@@ -434,7 +433,6 @@ function ( $, echarts, props, qlik ) {
         }
 
 
-
         return legendTextStyle
 
     }
@@ -487,7 +485,6 @@ function ( $, echarts, props, qlik ) {
             }
         }
 
-        
          return xAxis;
 
     }
@@ -552,7 +549,7 @@ function ( $, echarts, props, qlik ) {
         support:{snapshot: true,export: true,exportData: true},
         paint: function ( $element, layout ) {
 
-            console.log(layout)
+            //console.log(layout)
             echarts.dispose($element[0]); 
 
             var dimensionName           =   getDimensionName(layout);
@@ -579,7 +576,6 @@ function ( $, echarts, props, qlik ) {
             console.log(option)
 
             myChart.setOption(option);
-
 
             myChart.on('click', function (params) {
                 qlik.currApp(this).field(dimensionName).selectValues([params.name],true,true)
